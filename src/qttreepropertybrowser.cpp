@@ -40,7 +40,7 @@ bool QtTreePropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *facto
     editorFactory_ = factory;
 
     QHBoxLayout *layout = new QHBoxLayout(parent);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
 
     treeWidget_ = new QtPropertyTreeView(parent);
     treeWidget_->setEditorPrivate(this);

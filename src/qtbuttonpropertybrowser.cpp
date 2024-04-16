@@ -33,12 +33,12 @@ bool QtButtonPropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *fac
     editorFactory_ = factory;
 
     QVBoxLayout *parentLayout = new QVBoxLayout();
-    parentLayout->setMargin(4);
+    parentLayout->setContentsMargins(QMargins(4,4,4,4));
     parentLayout->setSpacing(0);
     parent->setLayout(parentLayout);
 
     QGridLayout *mainLayout = new QGridLayout();
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(QMargins(0,0,0,0));
     mainLayout->setSpacing(4);
 
     QWidget *mainView_ = new QWidget(parent);

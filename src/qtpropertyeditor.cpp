@@ -20,6 +20,7 @@
 
 #include <limits>
 
+
 QtPropertyEditor::QtPropertyEditor(QtProperty *property)
     : property_(property)
 {
@@ -104,17 +105,17 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
     QVariant v = property->getAttribute(QtAttributeName::MaxValue);
     if(name == QtAttributeName::MinValue)
     {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        int minValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::min();
         editor_->setMinimum(minValue);
     }
     else if(name == QtAttributeName::MaxValue)
     {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        int maxValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::max();
         editor_->setMaximum(maxValue);
     }
     else if(name == QtAttributeName::ReadOnly)
     {
-        editor_->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor_->setReadOnly(v.typeId() == QMetaType::Bool && v.toBool());
     }
 }
 
@@ -181,24 +182,24 @@ void QtDoubleSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString
     QVariant v = property->getAttribute(QtAttributeName::MinValue);
     if(name == QtAttributeName::MinValue)
     {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        int minValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::min();
         editor_->setMinimum(minValue);
     }
     else if(name == QtAttributeName::MaxValue)
     {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        int maxValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::max();
         editor_->setMaximum(maxValue);
     }
     else if(name == QtAttributeName::Decimals)
     {
-        if(v.type() == QVariant::Int)
+        if(v.typeId() == QMetaType::Int)
         {
             editor_->setDecimals(v.toInt());
         }
     }
     else if(name == QtAttributeName::ReadOnly)
     {
-        editor_->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor_->setReadOnly(v.typeId() == QMetaType::Bool && v.toBool());
     }
 }
 
@@ -258,7 +259,7 @@ void QtStringEditor::slotSetAttribute(QtProperty *property, const QString &name)
     QVariant value = property->getAttribute(name);
     if(name == QtAttributeName::ReadOnly)
     {
-        if(value.type() == QVariant::Bool)
+        if(value.typeId() == QMetaType::Bool)
         {
             editor_->setReadOnly(value.toBool());
         }
@@ -388,7 +389,7 @@ void QtEnumPairEditor::slotSetAttribute(QtProperty * property, const QString &na
     {
         enumValues_ = property->getAttribute(QtAttributeName::EnumValues).toList();
 
-        int index = std::max(0, enumValues_.indexOf(property->getValue()));
+        int index = std::max(0, int(enumValues_.indexOf(property->getValue())));
         if(index != index_)
         {
             if(editor_ != NULL)
@@ -627,28 +628,28 @@ void QtFileEditor::slotSetAttribute(QtProperty *property, const QString &name)
     QVariant value = property->getAttribute(name);
     if(name == QtAttributeName::FileDialogType)
     {
-        if(value.type() == QVariant::Int)
+        if(value.typeId() == QMetaType::Int)
         {
             dialogType_ = (DialogType)value.toInt();
         }
     }
     else if(name == QtAttributeName::FileDialogFilter)
     {
-        if(value.type() == QVariant::String)
+        if(value.typeId() == QMetaType::QString)
         {
             filter_ = value.toString();
         }
     }
     else if(name == QtAttributeName::FileRelativePath)
     {
-        if(value.type() == QVariant::String)
+        if(value.typeId() == QMetaType::QString)
         {
             relativePath_ = value.toString();
         }
     }
     else if(name == QtAttributeName::ReadOnly)
     {
-        if(editor_ != NULL && value.type() == QVariant::Bool)
+        if(editor_ != NULL && value.typeId() == QMetaType::Bool)
         {
             input_->setReadOnly(value.toBool());
         }
@@ -780,7 +781,7 @@ QWidget* QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFact
     editor_ = new QWidget(parent);
 
     QHBoxLayout *layout = new QHBoxLayout(editor_);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(1);
     editor_->setLayout(layout);
 
@@ -883,7 +884,7 @@ QWidget* QtFloatListEditor::createEditor(QWidget *parent, QtPropertyEditorFactor
     QWidget *editor = new QWidget(parent);
     QHBoxLayout *layout = new QHBoxLayout(editor);
     layout->setSpacing(2);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
     editor->setLayout(layout);
 
     QVector<float> values;
@@ -984,23 +985,23 @@ void QtFloatListEditor::setEditorAttribute(QDoubleSpinBox *editor, QtProperty *p
     QVariant v = property->getAttribute(QtAttributeName::MinValue);
     if(name == QtAttributeName::MinValue)
     {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        int minValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::min();
         editor->setMinimum(minValue);
     }
     else if(name == QtAttributeName::MaxValue)
     {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        int maxValue = (v.typeId() == QMetaType::Int) ? v.toInt() : std::numeric_limits<int>::max();
         editor->setMaximum(maxValue);
     }
     else if(name == QtAttributeName::Decimals)
     {
-        if(v.type() == QVariant::Int)
+        if(v.typeId() == QMetaType::Int)
         {
             editor->setDecimals(v.toInt());
         }
     }
     else if(name == QtAttributeName::ReadOnly)
     {
-        editor->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor->setReadOnly(v.typeId() == QMetaType::Bool && v.toBool());
     }
 }

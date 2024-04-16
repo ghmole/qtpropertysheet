@@ -80,7 +80,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
 
         layout_ = new QGridLayout();
         layout_->setSpacing(4);
-        layout_->setMargin(8);
+        layout_->setContentsMargins(QMargins(8,8,8,8));
         container_->setLayout(layout_);
     }
     else

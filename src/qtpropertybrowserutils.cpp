@@ -382,7 +382,7 @@ void QtBoolEdit::slotToggle(bool checked)
 void QtBoolEdit::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
@@ -394,7 +394,7 @@ QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(lineEdit_);
-    layout->setMargin(0);
+    layout->setContentsMargins(QMargins(0,0,0,0));
     lineEdit_->installEventFilter(this);
     lineEdit_->setReadOnly(true);
     lineEdit_->setFocusProxy(this);
@@ -528,7 +528,7 @@ void QtKeySequenceEdit::keyReleaseEvent(QKeyEvent *e)
 void QtKeySequenceEdit::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
@@ -591,11 +591,11 @@ void QtColorEditWidget::setValue(const QColor &c)
 void QtColorEditWidget::buttonClicked()
 {
     bool ok = false;
-    QRgb oldRgba = color_.rgba();
-    QRgb newRgba = QColorDialog::getRgba(oldRgba, &ok, this);
-    if (ok && newRgba != oldRgba)
+    QColor oldRgba = color_ ;
+    QColor newRgba = QColorDialog::getColor(oldRgba,   this);
+    if ( newRgba != oldRgba)
     {
-        setValue(QColor::fromRgba(newRgba));
+        setValue(newRgba);
         emit valueChanged(color_);
     }
 }
@@ -627,7 +627,7 @@ bool QtColorEditWidget::eventFilter(QObject *obj, QEvent *ev)
 void QtColorEditWidget::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

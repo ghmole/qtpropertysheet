@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QStyleOptionViewItem>
 
 namespace
 {
@@ -25,7 +26,7 @@ QtPropertyTreeView::QtPropertyTreeView(QWidget *parent)
 
 void QtPropertyTreeView::drawRow(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItemV3 opt = option;
+    QStyleOptionViewItem opt = option;
     QColor bgColor;
     if (editorPrivate_)
     {
